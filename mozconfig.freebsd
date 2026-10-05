@@ -1,0 +1,3 @@
+ac_add_options --with-wasi-sysroot=/usr/local/share/wasi-sysroot
+ac_add_options --with-libclang-path=/usr/local/llvm19/lib
+ac_add_options --prefix=/usr/local

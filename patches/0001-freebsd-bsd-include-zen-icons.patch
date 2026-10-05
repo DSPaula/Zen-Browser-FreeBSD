@@ -1,26 +1,13 @@
-From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: FreeBSD Zen Browser build reference
-Subject: [PATCH] Include Zen icon resources on BSD platforms
-
-The Zen icon resource manifest was restricted to XP_LINUX. FreeBSD
-uses XP_FREEBSD while using the same GTK/Unix theme resources.
-
-Include the BSD platform defines so the Zen icon resources are packaged
-for FreeBSD and the other BSD targets.
-
----
- browser/themes/shared/zen-icons/jar.inc.mn | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/browser/themes/shared/zen-icons/jar.inc.mn b/browser/themes/shared/zen-icons/jar.inc.mn
-index 0000000..0000000 100644
---- a/browser/themes/shared/zen-icons/jar.inc.mn
-+++ b/browser/themes/shared/zen-icons/jar.inc.mn
-@@ -1,5 +1,5 @@
+diff --git a/src/browser/themes/shared/zen-icons/jar.inc.mn b/src/browser/themes/shared/zen-icons/jar.inc.mn
+index e14dfef38..6e399b321 100644
+--- a/src/browser/themes/shared/zen-icons/jar.inc.mn
++++ b/src/browser/themes/shared/zen-icons/jar.inc.mn
+@@ -314,7 +314,7 @@
+ *  skin/classic/browser/zen-icons/xr.svg                      (../shared/zen-icons/nucleo/xr.svg) 
+ *  skin/classic/browser/zen-icons/zoom-out.svg                      (../shared/zen-icons/nucleo/zoom-out.svg) 
+ #endif
 -#ifdef XP_LINUX
 +#if defined(XP_LINUX) || defined(XP_FREEBSD) || defined(XP_NETBSD) || defined(XP_OPENBSD)
-
- [ab-CD]
- % resource zen-icons %content/branding/zen-icons/
--- 
-2.0.0
+ *  skin/classic/browser/zen-icons/algorithm.svg                      (../shared/zen-icons/nucleo/algorithm.svg) 
+ *  skin/classic/browser/zen-icons/arrow-corner-down-right.svg                      (../shared/zen-icons/nucleo/arrow-corner-down-right.svg) 
+ *  skin/classic/browser/zen-icons/arrow-down.svg                      (../shared/zen-icons/nucleo/arrow-down.svg) 

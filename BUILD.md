@@ -36,6 +36,10 @@ The generated tree should contain:
 
 engine/browser/locales/en-US/browser/zen-library.ftl
 
+After synchronization, rebuild the affected tree:
+
+CC=/usr/local/llvm19/bin/clang CXX=/usr/local/llvm19/bin/clang++ ./mach build faster
+
 This step fixed the initially missing Zen Library labels.
 
 ## 5. Apply the FreeBSD icon-resource correction
@@ -62,7 +66,7 @@ CXX=/usr/local/llvm19/bin/clang++ \
 
 ## 7. Build
 
-The validated build used two parallel jobs:
+The validated full build used two parallel jobs:
 
 CC=/usr/local/llvm19/bin/clang \
 CXX=/usr/local/llvm19/bin/clang++ \
@@ -104,7 +108,39 @@ may fail on stock FreeBSD because Mozilla's packaging logic expects GNU tar's:
 
 This is independent of the successful native compilation and installation.
 
-## 11. Verification checklist
+## 11. KDE integration
+
+mach install does not necessarily create a KDE application-menu entry for a manually installed FreeBSD build.
+
+A desktop entry can be created under:
+
+~/.local/share/applications/zen.desktop
+
+The repository includes a generic template at:
+
+desktop/zen-freebsd.desktop
+
+The validated setup used Zen's existing PNG application icons at multiple sizes under:
+
+/usr/local/lib/zen/browser/chrome/icons/default/
+
+KDE's application/icon cache may need refreshing after changing desktop metadata or icons.
+
+## 12. Engine recovery artifact
+
+The repository's publish-recovery branch contains:
+
+zen-engine-functional-delta.tar.gz
+
+The archive preserves the binary Git delta against engine revision d3ec66377c together with the 181 untracked files required to reconstruct the validated functional engine state.
+
+It is a recovery artifact, not a precompiled Zen binary, and is not required for an ordinary clean rebuild.
+
+The recovery procedure and base revision are documented in:
+
+SOURCE-RECOVERY.md
+
+## 13. Verification checklist
 
 - [ ] Binary identified as native FreeBSD ELF.
 - [ ] Zen starts without Linuxulator.
@@ -113,7 +149,7 @@ This is independent of the successful native compilation and installation.
 - [ ] /usr/local/bin/zen launches the installed browser.
 - [ ] KDE integration works after adding a desktop entry if desired.
 
-## 12. Reproducibility principle
+## 14. Reproducibility principle
 
 Always record:
 
@@ -124,5 +160,6 @@ Always record:
 5. FreeBSD-specific patches.
 6. Localization synchronization state.
 7. Packaging/toolchain incompatibilities.
+8. Engine recovery base revision when a recovery artifact is produced.
 
 This makes future failures distinguishable between source regressions, FreeBSD port changes, LLVM changes, and packaging-tool differences.

@@ -3,7 +3,7 @@
 Native FreeBSD build and compatibility notes for Zen Browser, with documented fixes validated on FreeBSD 14.5.
 
 > Project status: successful native build and installation on FreeBSD 14.5-RELEASE-p1.
-> Scope: reproducible build reference, FreeBSD compatibility fixes, and integration notes.
+> Scope: reproducible build reference, FreeBSD compatibility fixes, and recovery documentation.
 > This is not an official Zen Browser repository.
 
 ## Overview
@@ -120,6 +120,14 @@ After rebuilding, the localization stage reported the missing entries as added/u
 
 This repository documents localization synchronization as a build step rather than presenting it as a source patch.
 
+## FreeBSD Firefox patches
+
+The FreeBSD Firefox port was used as a compatibility reference.
+
+Firefox 157.0 from /usr/ports/www/firefox contained 37 FreeBSD-specific patches. The complete set was tested against the Zen/Firefox engine used for this build and validated successfully before being applied.
+
+This is an important part of the methodology: FreeBSD-specific browser fixes should be evaluated against the exact Firefox/Zen engine version rather than blindly assuming patches from another Firefox release.
+
 ## Build configuration
 
 The validated mozconfig was:
@@ -155,14 +163,6 @@ engine/obj-x86_64-unknown-freebsd14.5/dist/bin/zen
 ~~~
 
 It was verified as a dynamically linked native FreeBSD ELF executable.
-
-## FreeBSD Firefox patches
-
-The FreeBSD Firefox port was used as a compatibility reference.
-
-Firefox 157.0 from /usr/ports/www/firefox contained FreeBSD-specific patches. The available set of 37 FreeBSD Firefox patches was tested against the Zen/Firefox engine used for this build and validated successfully before being applied.
-
-This is an important part of the methodology: FreeBSD-specific browser fixes should be evaluated against the exact Firefox/Zen engine version rather than blindly assuming patches from another Firefox release will apply.
 
 ## Installation
 
@@ -215,7 +215,13 @@ A generic example is provided in:
 desktop/zen-freebsd.desktop
 ~~~
 
-After changing desktop metadata, KDE may require its application/icon cache to be refreshed.
+The validated KDE setup used Zen's existing PNG application icons at multiple sizes. These were installed under:
+
+~~~text
+/usr/local/lib/zen/browser/chrome/icons/default/
+~~~
+
+After changing desktop metadata or icons, KDE may require its application/icon cache to be refreshed.
 
 ## Build resource note
 
@@ -231,6 +237,26 @@ Additional temporary swap was used during compilation because of peak memory con
 
 The permanent swap configuration used by the validated system is a 16 GiB FreeBSD swap partition.
 
+## Engine recovery artifact
+
+The repository also contains:
+
+~~~text
+zen-engine-functional-delta.tar.gz
+~~~
+
+This is a recovery artifact for the validated functional engine state. It preserves the binary Git delta against engine revision `d3ec66377c` together with the 181 untracked files that were required to reconstruct that state.
+
+It is not a precompiled Zen binary and is not required for an ordinary clean rebuild. Its purpose is preservation and recovery of the exact engine state produced during the validated FreeBSD build work.
+
+The recovery procedure and base revision are documented in:
+
+~~~text
+SOURCE-RECOVERY.md
+~~~
+
+The archive is published on the `publish-recovery` branch rather than embedded into the normal source tree.
+
 ## Reproducibility
 
 The key version anchors are:
@@ -242,6 +268,7 @@ Firefox 157.0
 Surfer 1.14.9
 LLVM 19
 commit 813b28f44
+engine base revision d3ec66377c
 ~~~
 
 Future builds should record the corresponding Zen commit and Firefox engine version because Zen is actively synchronized with upstream Firefox.
@@ -252,6 +279,7 @@ Future builds should record the corresponding Zen commit and Firefox engine vers
 .
 ├── README.md
 ├── BUILD.md
+├── SOURCE-RECOVERY.md
 ├── mozconfig.freebsd
 ├── desktop/
 │   └── zen-freebsd.desktop
@@ -259,7 +287,9 @@ Future builds should record the corresponding Zen commit and Firefox engine vers
     └── 0001-freebsd-bsd-include-zen-icons.patch
 ~~~
 
-This repository deliberately does not contain the complete generated Zen build tree or build artifacts. The upstream Zen source remains the canonical source; this repository preserves the FreeBSD-specific knowledge and corrections needed to reproduce the validated build.
+The recovery archive is published separately on the `publish-recovery` branch.
+
+This repository deliberately does not contain the complete generated Zen build tree or ordinary build artifacts. The upstream Zen source remains the canonical source; this repository preserves the FreeBSD-specific knowledge, corrections, and recovery information needed to reproduce and understand the validated build.
 
 ## Upstream
 

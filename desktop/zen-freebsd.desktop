@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Zen Browser
+Comment=Native Zen Browser for FreeBSD
+Exec=/usr/local/bin/zen %U
+Icon=/usr/local/lib/zen/browser/chrome/icons/default/default128.png
+Terminal=false
+Type=Application
+Categories=Network;WebBrowser;
+StartupNotify=true
+StartupWMClass=zen
+MimeType=text/html;application/xhtml+xml;x-scheme-handler/http;x-scheme-handler/https;
